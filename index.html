@@ -316,11 +316,19 @@
             border-radius: 20px;
             height: 70vh;
             box-sizing: border-box;
+            overflow: hidden; /* 防止内容溢出 */
         }
 
+        /* 修改消息容器样式 */
         #chat-messages {
+            flex: 1;
+            width: 100%;
+            overflow-y: auto; /* 允许垂直滚动 */
             padding: 1rem;
-            padding-bottom: 80px;
+            padding-bottom: 80px; /* 为输入框留出空间 */
+            margin-bottom: 0;
+            position: relative;
+            height: calc(100% - 120px); /* 减去标签栏和输入框的高度 */
         }
 
         #chat-messages::-webkit-scrollbar {
@@ -700,9 +708,11 @@
 
         /* Message Cards */
         .message {
+            width: 100%;
+            max-width: 100%;
             margin: 1rem 0;
-            padding: 1.5rem;
-            border-radius: 15px;
+            word-wrap: break-word; /* 确保长文本会换行 */
+            overflow-wrap: break-word;
             color: #ffffff;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             overflow: hidden;
@@ -716,9 +726,12 @@
         }
 
         .message-text {
-            line-height: 1.6;
+            width: 100%;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
             word-break: break-word;
-            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         .message.user {
@@ -3166,53 +3179,61 @@
         }
 
         // Wheel event handler
-        function handleWheel(e) {
-            // Check if the wheel event occurred within the chat messages container
-            const chatMessages = document.getElementById('chat-messages');
+        function handleWheel(event) {
+            // 检查事件源是否在聊天区域内
             const chatContainer = document.querySelector('.chat-container');
-            
-            // If we're inside the chat container, only handle chat scrolling
-            if (chatContainer.contains(e.target)) {
-                // Only prevent default if we're at the boundaries to prevent weird scrolling behavior
-                const isAtTop = chatMessages.scrollTop === 0;
-                const isAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop === chatMessages.clientHeight;
-                
-                if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
-                    e.preventDefault();
-                }
-                // Completely disable page scrolling when in chat area
+            const chatMessages = document.getElementById('chat-messages');
+            const isInChatArea = event.target.closest('.chat-container') !== null;
+
+            // 如果在聊天区域内，允许正常滚动，不触发翻页
+            if (isInChatArea) {
+                event.stopPropagation();
                 return;
             }
-            
-            // Handle normal page navigation for other areas
-            if (!isScrolling) {
-                const delta = e.deltaY;
-                if (Math.abs(delta) < 30) return;
-                
-                if (delta > 0 && currentSection < sections.length - 1) {
-                    scrollToSection(currentSection + 1);
-                } else if (delta < 0 && currentSection > 0) {
-                    scrollToSection(currentSection - 1);
-                }
-                e.preventDefault();
-            }
-        }
 
-        // Touch event handlers
-        function handleTouchStart(e) {
-            touchStartY = e.touches[0].clientY;
-        }
-
-        function handleTouchEnd(e) {
-            touchEndY = e.changedTouches[0].clientY;
-            const delta = touchEndY - touchStartY;
-            
-            if (Math.abs(delta) < 50) return;
-            
+            // 在聊天区域外才处理翻页
+            const delta = event.deltaY;
             if (delta < 0 && currentSection < sections.length - 1) {
                 scrollToSection(currentSection + 1);
             } else if (delta > 0 && currentSection > 0) {
                 scrollToSection(currentSection - 1);
+            }
+        }
+
+        // Touch event handlers
+        function handleTouchStart(event) {
+            touchStartY = event.touches[0].clientY;
+            touchStartX = event.touches[0].clientX;
+        }
+
+        function handleTouchMove(event) {
+            // 检查是否在聊天区域内
+            const isInChatArea = event.target.closest('.chat-container') !== null;
+            
+            // 如果在聊天区域内，允许正常滚动，不触发翻页
+            if (isInChatArea) {
+                event.stopPropagation();
+                return;
+            }
+
+            // 在聊天区域外才处理翻页
+            if (event.touches.length > 0) {
+                const touchEndY = event.touches[0].clientY;
+                const touchEndX = event.touches[0].clientX;
+                
+                // 计算垂直和水平移动距离
+                const deltaY = touchEndY - touchStartY;
+                const deltaX = Math.abs(touchEndX - touchStartX);
+                
+                // 只有当垂直移动大于水平移动时才触发翻页
+                if (Math.abs(deltaY) > deltaX && Math.abs(deltaY) > 50) {
+                    if (deltaY < 0 && currentSection < sections.length - 1) {
+                        scrollToSection(currentSection + 1);
+                    } else if (deltaY > 0 && currentSection > 0) {
+                        scrollToSection(currentSection - 1);
+                    }
+                    touchStartY = touchEndY;
+                }
             }
         }
 
@@ -3237,9 +3258,9 @@
         }
 
         // Add event listeners for scrolling
-        window.addEventListener('wheel', handleWheel, { passive: false });
-        window.addEventListener('touchstart', handleTouchStart);
-        window.addEventListener('touchend', handleTouchEnd);
+        document.addEventListener('wheel', handleWheel, { passive: false });
+        document.addEventListener('touchstart', handleTouchStart, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
         window.addEventListener('keydown', handleKeydown);
 
         // Initialize everything when DOM is loaded
