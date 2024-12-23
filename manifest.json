@@ -1,0 +1,21 @@
+{
+    "name": "ETHAN WONG LTD",
+    "short_name": "ETHAN AI",
+    "description": "Professional e-commerce company providing advanced AI solutions",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#00c2ff",
+    "icons": [
+        {
+            "src": "/EW.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/EW.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+} 

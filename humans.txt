@@ -1,0 +1,10 @@
+/* TEAM */
+    Company: ETHAN WONG LTD
+    Contact: Ethan@ethanwong.ltd
+    Location: London, United Kingdom
+
+/* SITE */
+    Last update: 2024/03/19
+    Standards: HTML5, CSS3, JavaScript
+    Components: Material Icons
+    Software: Visual Studio Code 
