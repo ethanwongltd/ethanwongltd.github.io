@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://ethanwong.ltd/sitemap.xml
+
+# Allow all robots to access the site
+# Specify the location of the sitemap 
