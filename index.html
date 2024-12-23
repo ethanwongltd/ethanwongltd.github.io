@@ -21,11 +21,19 @@
     <meta property="og:url" content="https://ethanwong.ltd">
     <meta property="og:site_name" content="ETHAN WONG LTD">
     <meta property="og:locale" content="en_GB">
+    <meta property="og:image" content="https://ethanwong.ltd/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="ETHAN WONG LTD - Professional E-commerce Company & AI Solutions">
+    <meta property="og:logo" content="https://ethanwong.ltd/EW.png">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ETHAN WONG LTD - E-commerce & AI Solutions">
     <meta name="twitter:description" content="Leading e-commerce company providing advanced AI solutions for business operations.">
+    <meta name="twitter:image" content="https://ethanwong.ltd/og-image.jpg">
+    <meta name="twitter:image:alt" content="ETHAN WONG LTD - Professional E-commerce Company & AI Solutions">
     
     <!-- 结构化数据 -->
     <script type="application/ld+json">
@@ -33,6 +41,8 @@
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "ETHAN WONG LTD",
+        "logo": "https://ethanwong.ltd/EW.png",
+        "image": "https://ethanwong.ltd/og-image.jpg",
         "description": "Professional e-commerce company providing advanced AI solutions",
         "url": "https://ethanwong.ltd",
         "address": {
@@ -46,8 +56,12 @@
             "@type": "ContactPoint",
             "telephone": "+44 07543 923790",
             "contactType": "customer service",
-            "email": "Ethan@ethanwong.ltd"
-        }
+            "email": "Ethan@ethanwong.ltd",
+            "availableLanguage": ["en"]
+        },
+        "sameAs": [
+            "https://hawksling.com"
+        ]
     }
     </script>
 
@@ -121,7 +135,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/EW.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/EW.png">
     <link rel="shortcut icon" href="/EW.png">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0a0a0a">
     
     <!-- 规范链接 -->
@@ -662,7 +676,7 @@
 
         /* Contact Section */
         .contact-section {
-            padding-top: 0 !important; /* 移除顶部内边距 */
+            padding-top: 0 !important; /* 移除顶部��边距 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -2884,7 +2898,7 @@
             }
 
             .chat-container {
-                height: 80vh; /* 在小屏幕上进一步增加高度 */
+                height: 80vh; /* 在小屏幕上进一步增加��度 */
             }
 
             /* 调整联系信息卡片在小屏幕上的样式 */
@@ -3311,6 +3325,86 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <!-- 在 head 标签内添加更详细的 Schema.org 结构 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ETHAN WONG LTD",
+        "alternateName": "ETHAN AI",
+        "url": "https://ethanwong.ltd",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://ethanwong.ltd/EW.png",
+            "width": "512",
+            "height": "512",
+            "caption": "ETHAN WONG LTD Logo",
+            "thumbnailUrl": "https://ethanwong.ltd/EW.png"
+        },
+        "image": [
+            {
+                "@type": "ImageObject",
+                "url": "https://ethanwong.ltd/EW.png",
+                "width": "512",
+                "height": "512",
+                "caption": "ETHAN WONG LTD Company Logo",
+                "description": "The official logo of ETHAN WONG LTD, representing our professional e-commerce and AI solutions"
+            },
+            {
+                "@type": "ImageObject",
+                "url": "https://ethanwong.ltd/og-image.jpg",
+                "width": "1200",
+                "height": "630",
+                "caption": "ETHAN WONG LTD Banner",
+                "description": "Professional e-commerce company providing advanced AI solutions"
+            }
+        ],
+        "description": "ETHAN WONG LTD is a leading e-commerce company providing advanced AI solutions. Experience our proprietary AI assistant designed for intelligent business operations.",
+        "brand": {
+            "@type": "Brand",
+            "name": "ETHAN WONG LTD",
+            "logo": "https://ethanwong.ltd/EW.png"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "71-75 Shelton Street, Covent Garden",
+            "addressLocality": "London",
+            "postalCode": "WC2H 9JQ",
+            "addressCountry": "GB"
+        },
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+44 07543 923790",
+            "contactType": "customer service",
+            "email": "Ethan@ethanwong.ltd",
+            "availableLanguage": ["en"]
+        },
+        "sameAs": [
+            "https://hawksling.com"
+        ]
+    }
+    </script>
+
+    <!-- 添加额外的 WebSite 结构 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://ethanwong.ltd",
+        "name": "ETHAN WONG LTD",
+        "description": "Professional E-commerce Company & AI Solutions",
+        "publisher": {
+            "@type": "Organization",
+            "name": "ETHAN WONG LTD",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://ethanwong.ltd/EW.png",
+                "width": "512",
+                "height": "512"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <div class="starry-background"></div>
@@ -4401,7 +4495,7 @@
             }
         }
 
-        // 在 DOM 加载完成后初始化星空背景
+        // 在 DOM 加载完成后��始化星空背景
         document.addEventListener('DOMContentLoaded', function() {
             createStarryBackground();
             // ... 其他现有的初始化代码 ...
