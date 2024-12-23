@@ -169,6 +169,7 @@
             mix-blend-mode: screen;
         }
 
+        /* 鼠标呼吸效果 */
         .cursor-effect::before {
             content: '';
             position: absolute;
@@ -179,25 +180,71 @@
             border: 2px solid var(--accent-color);
             border-radius: inherit;
             transform: translate(-50%, -50%);
-            animation: cursorPulse 1.5s infinite;
+            animation: cursorPulse 2s infinite;
         }
 
+        /* 鼠标光晕效果 */
         .cursor-effect::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 200%;
-            height: 200%;
+            width: 300%;
+            height: 300%;
             background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
             transform: translate(-50%, -50%);
-            opacity: 0.1;
+            opacity: 0.05;
         }
 
+        /* 鼠标悬停时的放大效果 */
         .cursor-effect.active {
             width: 40px;
             height: 40px;
             border-radius: 20px;
+        }
+
+        /* 鼠标呼吸动画 */
+        @keyframes cursorPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(2);
+                opacity: 0;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+        }
+
+        /* 鼠标轨迹效果 */
+        .cursor-trail {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0;
+            transition: all 0.3s ease;
+            mix-blend-mode: screen;
+        }
+
+        /* 彗星尾效果 */
+        .cursor-trail::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 2px;
+            background: linear-gradient(to left, var(--accent-color), transparent);
+            transform: translate(-100%, -50%) rotate(var(--angle));
+            transform-origin: right center;
+            opacity: 0.5;
         }
 
         /* Enhanced Section Wrapper */
@@ -214,6 +261,7 @@
             position: relative;
         }
 
+        /* 修改section的过渡效果 */
         section {
             height: 100vh;
             width: 100%;
@@ -227,12 +275,26 @@
             padding: 0;
             opacity: 0;
             visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(50px) scale(0.9);
         }
 
         section.active {
             opacity: 1;
             visibility: visible;
+            transform: translateY(0) scale(1);
             z-index: 2;
+        }
+
+        section:not(.active) {
+            transform: translateY(50px) scale(0.9);
+        }
+
+        /* 确保内容也有过渡效果 */
+        .brand-content,
+        .ai-section .chat-container,
+        .contact-info {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Enhanced Brand Section */
@@ -518,16 +580,36 @@
             justify-content: center;
             gap: 0.5rem;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
+        /* 简化悬停效果，只改变背景色 */
+        .chat-input button:hover {
+            background: rgba(0, 194, 255, 0.8);
+        }
+
+        /* 移除之前的复杂悬停效果 */
+        .chat-input button::before {
+            display: none; /* 移除之前的伪元素效果 */
+        }
+
+        .chat-input button:hover::before {
+            display: none; /* 移除之前的伪元素效果 */
+        }
+
+        /* 确保图标颜色正确 */
         .chat-input button .material-icons {
             font-size: 20px;
             margin-right: 4px;
+            color: var(--primary-bg);
         }
 
+        /* 确保文字颜色正确 */
         .chat-input button span:not(.material-icons) {
             font-size: 16px;
             font-weight: 500;
+            color: var(--primary-bg);
         }
 
         .chat-input button:hover {
@@ -573,7 +655,7 @@
             font-size: 2.5rem;
             margin-bottom: 2rem; /* 减少标题下方间距 */
             text-align: center;
-            margin-top: -5vh; /* ��体向上偏移 */
+            margin-top: -5vh; /* 体向上偏移 */
         }
 
         .contact-info {
@@ -592,7 +674,7 @@
             display: flex;
             align-items: center;
             padding: 1.5rem;
-            padding-right: 4rem; /* 为按钮留出统一空间 */
+            padding-right: 4rem;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             border-radius: 12px;
@@ -601,7 +683,6 @@
             z-index: 2;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-sizing: border-box;
-            margin: 0; /* 移除margin，使用gap控制间距 */
         }
 
         /* 统一图标样式 */
@@ -619,25 +700,6 @@
         .contact-item:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.08);
-        }
-
-        .contact-item .copy-button,
-        .contact-item .visit-button {
-            position: absolute;
-            right: 1rem;
-            width: 36px;
-            height: 36px;
-            padding: 0;
-            background: rgba(0, 194, 255, 0.1);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            top: 50%;
-            transform: translateY(-50%); /* 垂直居中 */
         }
 
         /* 统一按钮内图标样式 */
@@ -786,7 +848,7 @@
             .contact-info {
                 width: 95%;
                 padding: 0 1rem;
-                gap: 1rem; /* 移动端稍微减小间�� */
+                gap: 1rem; /* 移动端稍微减小间 */
             }
 
             .contact-item {
@@ -981,7 +1043,7 @@
             margin-bottom: -4px;  /* 补偿padding-bottom */
         }
 
-        /* 修改页签样式，隐藏关闭按钮 */
+        /* 修改页签样式 */
         .chat-tab {
             position: relative;
             display: flex;
@@ -994,23 +1056,19 @@
             white-space: nowrap;
             transition: all 0.3s ease;
             border: 1px solid transparent;
-            z-index: 1;
-            font-family: 'Arial', sans-serif;
         }
 
-        /* 隐藏删除按钮 */
-        .chat-tab .delete-btn {
-            display: none !important;
-        }
-
-        /* 修改标签名称样式 */
+        /* 页签名称样式 */
         .chat-tab .tab-name {
             padding: 0 0.5rem;
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.8);
+            cursor: default;
+            user-select: none;
+            pointer-events: none; /* 禁止所有鼠标事件 */
         }
 
-        /* 活动标签样式 */
+        /* 活动页签样式 */
         .chat-tab.active {
             background: rgba(0, 194, 255, 0.1);
             border-color: var(--accent-color);
@@ -1020,9 +1078,22 @@
             color: var(--accent-color);
         }
 
-        /* 悬停效果 */
-        .chat-tab:hover {
-            background: rgba(255, 255, 255, 0.1);
+        /* 除所有重命名相关的样式和行为 */
+        .chat-tab .tab-name:hover,
+        .chat-tab.active .tab-name:hover,
+        .chat-tab .tab-name:focus,
+        .chat-tab.active .tab-name:focus {
+            cursor: default;
+            background: none;
+            outline: none;
+            pointer-events: none;
+        }
+
+        /* 移除重命名输入框样式 */
+        .rename-input,
+        .chat-tab .rename-input,
+        .chat-tab.active .rename-input {
+            display: none !important;
         }
 
         .new-chat-tab {
@@ -1056,7 +1127,7 @@
             overflow: hidden;
         }
 
-        /* 未登录���态的式（圆形） */
+        /* 未登录态的式（圆形） */
         .login-button:not(.logged-in) {
             width: 44px;
             min-width: 44px;
@@ -1285,7 +1356,7 @@
         section {
             height: 100vh;
             width: 100%;
-            position: fixed; /* 改为固定��位 */
+            position: fixed; /* 改为固定位 */
             top: 0;
             left: 0;
             display: flex;
@@ -1681,7 +1752,7 @@
             }
         }
 
-        /* 第二屏的单引导样��� */
+        /* 第二屏的单引导样 */
         .scroll-guide.simple {
             position: static;  /* 改为静态定位 */
             transform: none;   /* 移除transform */
@@ -1937,7 +2008,7 @@
             box-shadow: none !important;
         }
 
-        /* 头��样式 */
+        /* 头样式 */
         .message-avatar {
             width: 36px;
             height: 36px;
@@ -2284,7 +2355,7 @@
 
             /* 修改全屏按钮样式 */
             .expand-button {
-                display: none; /* 在移动端隐藏全屏���钮 */
+                display: none; /* 在移动端隐藏全屏按钮 */
             }
 
             .contact-info {
@@ -2553,7 +2624,7 @@
         /* 修改 AI 部分在移动端的布局 */
         @media (max-width: 768px) {
             .ai-section {
-                padding-top: 3rem; /* 增加顶部空间 */
+                padding-top: 3rem; /* 增加顶部空 */
             }
 
             .ai-title {
@@ -2683,6 +2754,8 @@
             justify-content: center;
             gap: 0.5rem;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         /* 添加输入框激活态样式 */
@@ -2768,7 +2841,7 @@
             /* 调整第三屏联系信息卡片样式 */
             .contact-item {
                 padding: 1.5rem;
-                padding-right: 4.5rem; /* 为复制按钮留出��多空间 */
+                padding-right: 4.5rem; /* 为复制按钮留出多空间 */
                 min-height: 60px; /* 确保最小高度 */
             }
 
@@ -2926,7 +2999,7 @@
             }
 
             .brand-intro {
-                font-size: 1rem !important; /* 减小正���字体 */
+                font-size: 1rem !important; /* 减小正文字体 */
                 line-height: 1.5;
                 max-width: 90%;
             }
@@ -3062,6 +3135,104 @@
             -moz-user-select: none;
             -ms-user-select: none;
             pointer-events: none;
+        }
+
+        /* 添加飞猫样式 */
+        .flying-cat {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23FFD700"><path d="M12,8L10.67,8.09C9.81,7.07 7.4,4.5 5,4.5C5,4.5 3.03,7.46 4.96,11.41C4.41,12.24 4.07,12.67 4,13.66L2.07,13.95L2.28,14.93L4.04,14.67L4.18,15.38L2.61,16.32L3.08,17.21L4.53,16.32C5.68,18.76 8.59,20 12,20C15.41,20 18.32,18.76 19.47,16.32L20.92,17.21L21.39,16.32L19.82,15.38L19.96,14.67L21.72,14.93L21.93,13.95L20,13.66C19.93,12.67 19.59,12.24 19.04,11.41C20.97,7.46 19,4.5 19,4.5C16.6,4.5 14.19,7.07 13.33,8.09L12,8Z"/></svg>') center/contain no-repeat;
+            pointer-events: none;
+            z-index: 9997;
+            animation: flyCat 3s linear;
+            opacity: 0;
+            filter: drop-shadow(0 0 5px gold); /* 添加金色光晕 */
+        }
+
+        /* 飞猫动画 */
+        @keyframes flyCat {
+            0% {
+                transform: translate(-100px, var(--start-y)) rotate(-30deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(100vw + 100px), calc(var(--start-y) - 200px)) rotate(-30deg);
+                opacity: 0;
+            }
+        }
+
+        /* 飞碟样式 */
+        .flying-ufo {
+            position: fixed;
+            width: 50px;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238FB3FF"><path d="M15.94,10.28C15.76,7.54,14,5.18,11.62,4.3V2.18L9.62,4.3C7.24,5.18,5.5,7.54,5.32,10.28C2.38,11.28,0,12.46,0,13.5C0,15.14,5.4,16.5,12,16.5C18.6,16.5,24,15.14,24,13.5C24,12.46,21.62,11.28,18.68,10.28Z"/></svg>') center/contain no-repeat;
+            pointer-events: none;
+            z-index: 9997;
+            animation: flyUfo 4s linear;
+            opacity: 0;
+            filter: drop-shadow(0 0 8px rgba(143, 179, 255, 0.8));
+        }
+
+        /* 飞碟呼吸光效 */
+        .flying-ufo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(143, 179, 255, 0.4) 0%, transparent 70%);
+            animation: ufoGlow 1s ease-in-out infinite alternate;
+        }
+
+        /* 飞碟轨迹点 */
+        .ufo-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: rgba(143, 179, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9996;
+            opacity: 0;
+            transition: all 0.5s ease;
+            filter: blur(2px);
+        }
+
+        /* 飞碟动画 */
+        @keyframes flyUfo {
+            0% {
+                transform: translate(var(--start-x), var(--start-y));
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--end-x), var(--end-y));
+                opacity: 0;
+            }
+        }
+
+        /* 飞碟呼吸光效动画 */
+        @keyframes ufoGlow {
+            from {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0.6;
+                transform: scale(1.2);
+            }
         }
     </style>
     <!-- 添加 Google Material Icons -->
@@ -3300,8 +3471,6 @@
         // Wheel event handler
         function handleWheel(event) {
             // 检查事件源是否在聊天区域内
-            const chatContainer = document.querySelector('.chat-container');
-            const chatMessages = document.getElementById('chat-messages');
             const isInChatArea = event.target.closest('.chat-container') !== null;
 
             // 如果在聊天区域内，允许正常滚动，不触发翻页
@@ -3310,13 +3479,28 @@
                 return;
             }
 
-            // 在聊天区域外才处理翻页
-            const delta = event.deltaY;
-            if (delta < 0 && currentSection < sections.length - 1) {
-                scrollToSection(currentSection + 1);
-            } else if (delta > 0 && currentSection > 0) {
-                scrollToSection(currentSection - 1);
+            // 累积滚动距离
+            wheelDelta += event.deltaY;
+
+            // 设置滚动阈值（增加阈值使得需要更大的滚动距离）
+            const threshold = 300; // 增加阈值
+
+            // 在聊天区域外才处理翻页，并且需要达到阈值
+            if (Math.abs(wheelDelta) >= threshold) {
+                if (wheelDelta > 0 && currentSection < sections.length - 1) {
+                    scrollToSection(currentSection + 1);
+                    wheelDelta = 0; // 重置累积距离
+                } else if (wheelDelta < 0 && currentSection > 0) {
+                    scrollToSection(currentSection - 1);
+                    wheelDelta = 0; // 重置累积距离
+                }
             }
+
+            // 添加一个延迟重置，防止快速滚动
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                wheelDelta = 0;
+            }, 200);
         }
 
         // Touch event handlers
@@ -3685,7 +3869,7 @@
                 }
             });
             
-            // 发送按钮点击事件
+            // 发送按钮点击��件
             document.querySelector('.chat-input button').addEventListener('click', function() {
                 handleChat();
                 if (isMobile()) {
@@ -3708,28 +3892,35 @@
         let chatHistory = {};
         let userEmail = localStorage.getItem('userEmail');
 
+        // 修改创建新标签的函数
         function createNewChat() {
             currentChatId++;
             const chatTabs = document.querySelector('.chat-tabs');
             const newTab = document.createElement('div');
             newTab.className = 'chat-tab';
             newTab.dataset.id = currentChatId;
+            
             newTab.innerHTML = `
                 <span class="tab-name">Chat ${currentChatId}</span>
-                <span class="material-icons delete-btn" onclick="deleteChat(this)" title="Delete chat">close</span>
             `;
             
-            // Insert before the + button
+            // 添加点击事件监听器
+            newTab.addEventListener('click', function() {
+                // 移除其他标签的活动状态
+                document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+                // 设置当前标签为活动状态
+                this.classList.add('active');
+                // 保存聊天记录
+                saveChatToLocal();
+            });
+            
             chatTabs.insertBefore(newTab, document.querySelector('.new-chat-tab'));
             
-            // 更新删除按钮显示状态
-            updateDeleteButtons();
-            
-            // 切换到新标签并初始化消息
+            // 移除其他标签的活动状态
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             newTab.classList.add('active');
             
-            // 只在创建新标签时初始化消息
+            // 清空聊天记录
             document.getElementById('chat-messages').innerHTML = `
                 <div class="message ai">
                     <div class="message-avatar">
@@ -3745,12 +3936,27 @@
                 </div>
             `;
             
-            // 清空输入框
             document.getElementById('user-input').value = '';
             
-            // 保存到本地存储
             saveChatToLocal();
         }
+
+        // 添加页签切换事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为现有的页签添加点击事件
+            document.querySelectorAll('.chat-tab').forEach(tab => {
+                if (!tab.classList.contains('new-chat-tab')) {
+                    tab.addEventListener('click', function() {
+                        // 移除其他标签的活动状态
+                        document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+                        // 设置当前标签为活动状态
+                        this.classList.add('active');
+                        // 加载对应的聊天记录
+                        loadChatFromLocal(this.dataset.id);
+                    });
+                }
+            });
+        });
 
         function saveChatHistory() {
             if (userEmail) {
@@ -4141,38 +4347,121 @@
             // ... 其他现有的初始化代码 ...
         });
 
-        // 添加流星计数器
+        // 修改流星计数器和初始化函数
         let meteorCount = 0;
 
-        // 修改流星初始化函数
         function initShootingStars() {
             function createNext() {
                 meteorCount++;
-                createShootingStar(false);
                 
-                // 每5颗流星后触发流星雨
-                if (meteorCount % 5 === 0) {
-                    setTimeout(createMeteorShower, 1000);  // 延迟1秒后开始流星雨
+                // 每4次出现一次随机效果
+                if (meteorCount % 4 === 0) {
+                    // 随机选择效果：流星(40%)、飞猫(30%)、飞碟(30%)
+                    const rand = Math.random();
+                    if (rand < 0.4) {
+                        createMeteorShower();
+                    } else if (rand < 0.7) {
+                        createFlyingCat();
+                    } else {
+                        createFlyingUfo();
+                    }
+                } else {
+                    createShootingStar(false);
                 }
                 
-                // 4秒后创建下一颗
-                setTimeout(createNext, 4000);
+                // 3-5秒后创建下一个
+                setTimeout(createNext, 3000 + Math.random() * 2000);
             }
             
-            // 开始创建流星
             createNext();
         }
 
-        // 创建流星雨
+        // 恢复飞猫创建函数
+        function createFlyingCat() {
+            const container = document.querySelector('.starry-background');
+            const cat = document.createElement('div');
+            cat.className = 'flying-cat';
+            
+            // 随机起始位置
+            const startY = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
+            cat.style.setProperty('--start-y', `${startY}px`);
+            
+            container.appendChild(cat);
+            
+            // 动画结束后移除元素
+            cat.addEventListener('animationend', () => {
+                cat.remove();
+            });
+        }
+
+        // 飞碟创建函数
+        function createFlyingUfo() {
+            const container = document.querySelector('.starry-background');
+            const ufo = document.createElement('div');
+            ufo.className = 'flying-ufo';
+            
+            // 随机起始和结束位置
+            const startX = -100;
+            const startY = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
+            const endX = window.innerWidth + 100;
+            const endY = Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.2;
+            
+            ufo.style.setProperty('--start-x', `${startX}px`);
+            ufo.style.setProperty('--start-y', `${startY}px`);
+            ufo.style.setProperty('--end-x', `${endX}px`);
+            ufo.style.setProperty('--end-y', `${endY}px`);
+            
+            container.appendChild(ufo);
+            
+            // 创建轨迹点
+            const trails = [];
+            let currentX = startX;
+            let currentY = startY;
+            
+            // 更新轨迹点位置
+            const updateInterval = setInterval(() => {
+                const trail = document.createElement('div');
+                trail.className = 'ufo-trail';
+                
+                const rect = ufo.getBoundingClientRect();
+                trail.style.left = `${rect.left + rect.width/2}px`;
+                trail.style.top = `${rect.top + rect.height/2}px`;
+                
+                container.appendChild(trail);
+                trails.push(trail);
+                
+                // 显示轨迹点
+                setTimeout(() => {
+                    trail.style.opacity = '1';
+                }, 10);
+                
+                // 淡出并移除轨迹点
+                setTimeout(() => {
+                    trail.style.opacity = '0';
+                    setTimeout(() => {
+                        trail.remove();
+                    }, 500);
+                }, 1000);
+            }, 50);
+            
+            // 动画结束后清理
+            ufo.addEventListener('animationend', () => {
+                clearInterval(updateInterval);
+                ufo.remove();
+                trails.forEach(trail => trail.remove());
+            });
+        }
+
+        // 修改流星雨函数
         function createMeteorShower() {
-            const showerCount = 15 + Math.floor(Math.random() * 10);  // 15-25颗流星
+            const showerCount = 15 + Math.floor(Math.random() * 10);
             let delay = 0;
             
             for (let i = 0; i < showerCount; i++) {
                 setTimeout(() => {
                     createShootingStar(true);
                 }, delay);
-                delay += 200;  // 每颗流星间隔200ms
+                delay += 200;
             }
         }
 
@@ -4248,7 +4537,7 @@
             }
         }
 
-        // 添加 ESC 键退出全
+        // 添加 ESC 键退出全屏
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const fullscreenChat = document.querySelector('.fullscreen-chat');
@@ -4285,7 +4574,7 @@
                 const chats = JSON.parse(savedChats);
                 const chatTabs = document.querySelector('.chat-tabs');
                 
-                // 清除现有的标（除了新建按钮）
+                // 清除现有的标签（除了新建按钮）
                 document.querySelectorAll('.chat-tab:not(.new-chat-tab)').forEach(tab => tab.remove());
                 
                 // 重建聊天标签
@@ -4350,6 +4639,79 @@
                 loadingMessage.remove();
             }
         }
+
+        // 添加鼠标效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 移除已存在的cursor-effect元素
+            document.querySelectorAll('.cursor-effect, .cursor-trail').forEach(el => el.remove());
+            
+            const cursor = document.createElement('div');
+            cursor.className = 'cursor-effect';
+            document.body.appendChild(cursor);
+            
+            // 创建轨迹点数组
+            const trails = Array.from({ length: 8 }, () => {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                document.body.appendChild(trail);
+                return trail;
+            });
+            
+            let trailIndex = 0;
+            let prevX = 0;
+            let prevY = 0;
+            
+            // 更新鼠标位置
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                // 计算移动角度
+                const angle = Math.atan2(mouseY - prevY, mouseX - prevX) * 180 / Math.PI;
+                
+                // 更新主光标
+                cursor.style.left = mouseX + 'px';
+                cursor.style.top = mouseY + 'px';
+                
+                // 更新轨迹点
+                const trail = trails[trailIndex];
+                trail.style.left = mouseX + 'px';
+                trail.style.top = mouseY + 'px';
+                trail.style.opacity = '0.3';
+                trail.style.setProperty('--angle', `${angle}deg`);
+                
+                setTimeout(() => {
+                    trail.style.opacity = '0';
+                }, 100);
+                
+                trailIndex = (trailIndex + 1) % trails.length;
+                prevX = mouseX;
+                prevY = mouseY;
+            });
+            
+            // 添加悬停效果
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.tagName === 'BUTTON' || 
+                    e.target.tagName === 'A' || 
+                    e.target.classList.contains('chat-tab') ||
+                    e.target.classList.contains('nav-button')) {
+                    cursor.classList.add('active');
+                }
+            });
+            
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.tagName === 'BUTTON' || 
+                    e.target.tagName === 'A' || 
+                    e.target.classList.contains('chat-tab') ||
+                    e.target.classList.contains('nav-button')) {
+                    cursor.classList.remove('active');
+                }
+            });
+        });
+
+        // 添加全局变量
+        let wheelDelta = 0;
+        let wheelTimeout;
     </script>
 </body>
 </html> 
