@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ETHAN WONG LTD</title>
+    <!-- 在 <head> 标签内添加以下代码 -->
+    <link rel="icon" type="image/png" href="EW.png">
+    <link rel="apple-touch-icon" href="EW.png">
     <style>
         :root {
             --primary-bg: #0a0a0a;
@@ -84,32 +87,25 @@
             width: 100vw;
             overflow: hidden;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .sections-container {
-            width: 100%;
             height: 100vh;
+            width: 100%;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         section {
-            min-height: 100vh;
+            height: 100vh;
             width: 100%;
-            position: absolute;
-            top: 50%;
-            left: 50%; /* 添加水平居中 */
-            transform: translate(-50%, -50%); /* 使用translate确保完全居中 */
+            position: fixed;
+            top: 0;
+            left: 0;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
             visibility: hidden;
         }
@@ -117,19 +113,16 @@
         section.active {
             opacity: 1;
             visibility: visible;
-            transform: translate(-50%, -50%) scale(1); /* 保持居中 */
             z-index: 2;
-        }
-
-        section:not(.active) {
-            transform: translate(-50%, 50%) scale(0.9);
         }
 
         /* Enhanced Brand Section */
         .brand-section {
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0 !important;
         }
 
         .brand-content {
@@ -139,9 +132,50 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transform: translateY(-10%);
-            padding: 0 2rem;
-            text-align: center; /* 确保所有文字居中 */
+            text-align: center;
+            padding: 0;
+            position: relative;
+            top: -10vh; /* 使用相对定位向上偏移 */
+        }
+
+        .logo {
+            width: 100%;
+            text-align: center;
+        }
+
+        .tagline {
+            width: 100%;
+            text-align: center;
+        }
+
+        .brand-intro {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            section {
+                position: fixed;
+                height: 100%;
+                width: 100%;
+            }
+
+            .brand-content {
+                width: 100%;
+                padding: 0 1.5rem;
+                top: -8vh; /* 移动端稍微减少偏移量 */
+            }
+        }
+
+        /* 小屏幕适配 */
+        @media (max-width: 480px) {
+            .brand-content {
+                padding: 0 1rem;
+                top: -6vh;
+            }
         }
 
         .logo {
@@ -231,11 +265,11 @@
 
         /* AI Chat Section */
         .ai-section {
-            padding: 2rem !important;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         .ai-title {
@@ -340,6 +374,8 @@
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
             font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none; /* 移除默认的outline */
         }
 
         .chat-input button {
@@ -399,7 +435,7 @@
 
         /* Contact Section */
         .contact-section {
-            padding-top: 0 !important;
+            padding-top: 0 !important; /* 移除顶部内边距 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -408,27 +444,28 @@
 
         .contact-title {
             font-size: 2.5rem;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem; /* 减少标题下方间距 */
             text-align: center;
+            margin-top: -5vh; /* 整体向上偏移 */
         }
 
         .contact-info {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 0 2rem;
-            align-items: flex-start;
         }
 
+        /* 修改联系方式卡片样式 */
         .contact-item {
             position: relative;
             display: flex;
             align-items: center;
             padding: 1.5rem;
-            padding-right: 4rem;
+            padding-right: 4rem; /* 为按钮留出统一空间 */
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             border-radius: 12px;
@@ -436,6 +473,20 @@
             width: 100%;
             z-index: 2;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+            margin: 0; /* 移除margin，使用gap控制间距 */
+        }
+
+        /* 统一图标样式 */
+        .contact-item .material-icons {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px; /* 固定宽度 */
+            height: 20px; /* 固定高度 */
         }
 
         .contact-item:hover {
@@ -443,20 +494,37 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        .contact-item .material-icons {
+        .contact-item .copy-button,
+        .contact-item .visit-button {
+            position: absolute;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            background: rgba(0, 194, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            top: 50%;
+            transform: translateY(-50%); /* 垂直居中 */
+        }
+
+        /* 统一按钮内图标样式 */
+        .contact-item .copy-button .material-icons,
+        .contact-item .visit-button .material-icons {
             font-size: 20px;
-            flex-shrink: 0;
-            margin-right: 12px;
+            margin: 0;
+            width: auto;
+            height: auto;
         }
 
         .contact-item span:not(.material-icons) {
             flex: 1;
             margin-right: 12px;
-        }
-
-        .contact-item .copy-button {
-            position: absolute;
-            right: 1rem;
         }
 
         .copyright {
@@ -466,6 +534,7 @@
             text-align: center;
             left: 0;
             opacity: 0.7;
+            margin-top: 2rem; /* 增加与联系信息的间距 */
         }
 
         /* Animations */
@@ -586,6 +655,28 @@
             .contact-section {
                 padding-top: 10vh;  /* 在小屏幕上减少顶部间距 */
             }
+
+            .contact-info {
+                width: 95%;
+                padding: 0 1rem;
+                gap: 1rem; /* 移动端稍微减小间距 */
+            }
+
+            .contact-item {
+                padding: 1.2rem;
+                padding-right: 4rem;
+            }
+
+            .contact-title {
+                margin-top: -3vh; /* 移动端稍微减少偏移 */
+                font-size: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .contact-info {
+                width: 100%;
+                padding: 0 0.8rem;
+            }
         }
 
         @media (max-height: 700px) {
@@ -663,50 +754,61 @@
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
             z-index: 1000;
         }
 
-        /* 修改导航按钮样式 */
         .nav-button {
-            width: 40px;
-            height: 40px;
+            width: 32px; /* 减小尺寸 */
+            height: 32px;
             border: none;
             border-radius: 50%;
-            background: rgba(0, 194, 255, 0.1);
+            background: rgba(0, 194, 255, 0.08); /* 降低背景不透明度 */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
         }
 
         .nav-button:hover {
-            background: var(--accent-color);
+            background: rgba(0, 194, 255, 0.15);
+            transform: translateY(-2px);
         }
 
         /* 修改图标样式 */
         .nav-button .material-icons {
             color: var(--accent-color);
-            transition: color 0.3s ease;
+            font-size: 18px; /* 减小图标尺寸 */
+            opacity: 0.8; /* 降低图标不透明度 */
+            transition: all 0.2s ease;
         }
 
         .nav-button:hover .material-icons {
-            color: white !important;  /* 确保hover时图标变白 */
+            opacity: 1;
         }
 
         /* 禁用状态样式 */
         .nav-button.disabled {
             opacity: 0.3;
             cursor: not-allowed;
+            transform: none;
         }
 
         .nav-button.disabled:hover {
-            background: rgba(0, 194, 255, 0.1);
+            background: rgba(0, 194, 255, 0.08);
         }
 
         .nav-button.disabled:hover .material-icons {
-            color: var(--accent-color) !important;
+            opacity: 0.8;
+        }
+
+        /* 移动端隐藏导航按钮 */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                display: none;
+            }
         }
 
         /* Chat Tabs */
@@ -747,6 +849,7 @@
             margin-bottom: -4px;  /* 补偿padding-bottom */
         }
 
+        /* 修改页签样式，隐藏关闭按钮 */
         .chat-tab {
             position: relative;
             display: flex;
@@ -763,11 +866,29 @@
             font-family: 'Arial', sans-serif;
         }
 
+        /* 隐藏删除按钮 */
+        .chat-tab .delete-btn {
+            display: none !important;
+        }
+
+        /* 修改标签名称样式 */
+        .chat-tab .tab-name {
+            padding: 0 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 活动标签样式 */
         .chat-tab.active {
             background: rgba(0, 194, 255, 0.1);
             border-color: var(--accent-color);
         }
 
+        .chat-tab.active .tab-name {
+            color: var(--accent-color);
+        }
+
+        /* 悬停效果 */
         .chat-tab:hover {
             background: rgba(255, 255, 255, 0.1);
         }
@@ -812,7 +933,7 @@
             padding: 0;
         }
 
-        /* 登录状态的样��（圆角矩形） */
+        /* 登录状态的样（圆角矩形） */
         .login-button.logged-in {
             min-width: 44px;
             max-width: 200px;
@@ -1032,27 +1153,21 @@
         section {
             height: 100vh;
             width: 100%;
-            position: absolute;
+            position: fixed; /* 改为固定定位 */
             top: 0;
             left: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 2rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            justify-content: center;
+            padding: 0;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(100%);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            z-index: 2;  /* 增加层级 */
         }
 
         section.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0) scale(1);
             z-index: 2;
         }
 
@@ -1091,14 +1206,16 @@
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
             z-index: 1000;
         }
 
         /* Add responsive styles for sections */
         @media (max-width: 768px) {
             section {
-                padding: 1rem;
+                position: fixed;
+                height: 100%;
+                width: 100%;
             }
 
             .chat-container {
@@ -1252,11 +1369,11 @@
 
         /* 修改标签名样式 */
         .chat-tab .tab-name {
-            cursor: default;  /* 默认不显示可点击状态 */
+            cursor: default;  /* 默认不显示点击状态 */
             position: relative;
         }
 
-        /* 只有激活的标签才显示重命名功能 */
+        /* 只有激活的标签才显示重名功能 */
         .chat-tab.active .tab-name {
             cursor: pointer;
         }
@@ -1512,7 +1629,7 @@
             }
         }
 
-        /* 添加超小屏幕断点，确保字体不会太小 */
+        /* 添加超小屏幕断点，确保字体不会小 */
         @media (max-width: 360px) {
             .logo {
                 font-size: clamp(3rem, 6vw, 3.5rem);
@@ -1635,7 +1752,7 @@
         }
 
         section {
-            position: absolute;
+            position: fixed; /* 改为固定定位 */
             z-index: 1;
             background: transparent;
         }
@@ -2037,6 +2154,17 @@
             .expand-button {
                 display: none; /* 在移动端隐藏全屏按钮 */
             }
+
+            .contact-info {
+                width: 95%;
+                padding: 0 1rem;
+                gap: 1rem; /* 移动端稍微减小间距 */
+            }
+
+            .contact-item {
+                padding: 1.2rem;
+                padding-right: 4rem;
+            }
         }
 
         /* 添加更小屏幕的适配 */
@@ -2057,6 +2185,17 @@
                 font-size: 0.85rem;
                 max-width: 90%;
             }
+
+            .contact-info {
+                width: 100%;
+                padding: 0 0.8rem;
+                gap: 0.8rem; /* 更小屏幕进一步减小间距 */
+            }
+
+            .contact-item {
+                padding: 1rem;
+                padding-right: 3.5rem;
+            }
         }
 
         /* 添加低高度屏幕的适配 */
@@ -2074,7 +2213,7 @@
             }
         }
 
-        /* 修改聊天输入框的响应式样式 */
+        /* 修聊天输入框的响应式样式 */
         @media (max-width: 768px) {
             .chat-input-container {
                 padding: 0.5rem;
@@ -2145,7 +2284,7 @@
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.8rem;
             z-index: 1000;
             background: rgba(10, 10, 10, 0.3);
             padding: 0.5rem;
@@ -2156,27 +2295,56 @@
         }
 
         .nav-button {
-            width: 40px;
-            height: 40px;
+            width: 32px; /* 减小尺寸 */
+            height: 32px;
             border: none;
             border-radius: 50%;
-            background: rgba(0, 194, 255, 0.1);
+            background: rgba(0, 194, 255, 0.08); /* 降低背景不透明度 */
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
         }
 
         .nav-button:hover {
-            background: rgba(0, 194, 255, 0.2);
+            background: rgba(0, 194, 255, 0.15);
             transform: translateY(-2px);
         }
 
+        /* 修改图标样式 */
         .nav-button .material-icons {
-            color: var(--accent-color) !important;
-            font-size: 24px;
+            color: var(--accent-color);
+            font-size: 18px; /* 减小图标尺寸 */
+            opacity: 0.8; /* 降低图标不透明度 */
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover .material-icons {
+            opacity: 1;
+        }
+
+        /* 禁用状态样式 */
+        .nav-button.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nav-button.disabled:hover {
+            background: rgba(0, 194, 255, 0.08);
+        }
+
+        .nav-button.disabled:hover .material-icons {
+            opacity: 0.8;
+        }
+
+        /* 移动端隐藏导航按钮 */
+        @media (max-width: 768px) {
+            .nav-buttons {
+                display: none;
+            }
         }
 
         /* 更小屏幕的额外调整 */
@@ -2385,6 +2553,17 @@
             flex-shrink: 0;
         }
 
+        /* 添加输入框激活态样式 */
+        .chat-input input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px var(--accent-color); /* 使用box-shadow代替outline */
+        }
+
+        /* 添加输入框悬停态样式 */
+        .chat-input input:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .chat-container {
@@ -2505,22 +2684,6 @@
             .contact-item {
                 padding: 1rem;
                 padding-right: 3.5rem;
-            }
-        }
-
-        /* 调整联系方式部分的整体布局 */
-        .contact-section {
-            padding-top: 4rem;
-        }
-
-        @media (max-width: 768px) {
-            .contact-section {
-                padding-top: 3rem;
-            }
-
-            .contact-info {
-                width: 100%;
-                padding: 0 1rem;
             }
         }
 
@@ -2677,6 +2840,97 @@
                 font-size: 0.85rem !important;
             }
         }
+
+        /* 添加访问按钮样式 */
+        .visit-button {
+            position: absolute;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            background: rgba(0, 194, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .visit-button:hover {
+            background: rgba(0, 194, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .visit-button .material-icons {
+            font-size: 20px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .contact-item .visit-button {
+                right: 1.2rem;
+            }
+        }
+
+        /* 修改按钮样式 */
+        .copy-button, .visit-button {
+            position: absolute;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            background: rgba(0, 194, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover, .visit-button:hover {
+            background: rgba(0, 194, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .copy-button .material-icons, .visit-button .material-icons {
+            font-size: 20px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .contact-item .copy-button,
+            .contact-item .visit-button {
+                right: 1.2rem;
+            }
+        }
+
+        /* 防止所有标题被选中 */
+        .logo,
+        .tagline,
+        .ai-title,
+        .contact-title {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+        }
+
+        /* 确保标题的子元素也不能被选中 */
+        .logo *,
+        .tagline *,
+        .ai-title *,
+        .contact-title * {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+        }
     </style>
     <!-- 添加 Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -2705,9 +2959,9 @@
                 <div class="brand-particles"></div>
                 <div class="brand-content">
                     <h1 class="logo pixelify-sans-bold" data-text="ETHAN WONG LTD">ETHAN WONG LTD</h1>
-                    <p class="tagline">Next Generation AI Assistant</p>
+                    <p class="tagline">Internal AI Assistant</p>
                     <p class="brand-intro">
-                        Experience the future of AI interaction with our advanced conversational assistant. Powered by cutting-edge natural language processing and machine learning technologies, our AI assistant delivers human-like conversations, understands context, and learns from each interaction to provide increasingly personalized responses.
+                        Welcome to ETHAN AI, the proprietary AI assistant of ETHAN WONG LTD, a leading e-commerce company. This advanced conversational tool is designed to enhance our internal operations and team collaboration. Powered by cutting-edge AI technology, it provides intelligent support for our staff while maintaining the highest standards of data security and operational efficiency.
                     </p>
                 </div>
                 <div class="scroll-guide fancy">
@@ -2778,6 +3032,7 @@
             <section class="contact-section" id="contact">
                 <h2 class="contact-title">Contact Us</h2>
                 <div class="contact-info">
+                    <!-- 现有的联系方式卡片 -->
                     <div class="contact-item">
                         <span class="material-icons" style="color: #00c2ff;">public</span>
                         <span>71-75 Shelton Street, Covent Garden, London, United Kingdom WC2H 9JQ</span>
@@ -2797,6 +3052,14 @@
                         <span>Ethan@ethanwong.ltd</span>
                         <button class="copy-button" onclick="copyText(this.previousElementSibling.textContent)">
                             <span class="material-icons" style="color: #00c2ff;">content_copy</span>
+                        </button>
+                    </div>
+                    <!-- 友情链接卡片 -->
+                    <div class="contact-item">
+                        <span class="material-icons" style="color: #00c2ff;">link</span>
+                        <span>HawkSling - Professional Hunting Slingshot Store</span>
+                        <button class="visit-button" onclick="window.open('https://hawksling.com', '_blank')">
+                            <span class="material-icons" style="color: #00c2ff;">open_in_new</span>
                         </button>
                     </div>
                 </div>
@@ -3207,17 +3470,14 @@
             // Insert before the + button
             chatTabs.insertBefore(newTab, document.querySelector('.new-chat-tab'));
             
-            // 检查标签数并显示/隐藏删除按钮
-            const allTabs = document.querySelectorAll('.chat-tab:not(.new-chat-tab)');
-            allTabs.forEach(tab => {
-                const deleteBtn = tab.querySelector('.delete-btn');
-                if (deleteBtn) {
-                    deleteBtn.style.display = allTabs.length > 1 ? 'inline-block' : 'none';
-                }
-            });
+            // 更新删除按钮显示状态
+            updateDeleteButtons();
             
-            // Clear messages and save current chat
-            saveChatHistory();
+            // 切换到新标签并初始化消息
+            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+            newTab.classList.add('active');
+            
+            // 只在创建新标签时初始化消息
             document.getElementById('chat-messages').innerHTML = `
                 <div class="message ai">
                     <div class="message-avatar">
@@ -3233,12 +3493,8 @@
                 </div>
             `;
             
-            // Update active tab
-            const activeTab = document.querySelector('.chat-tab.active');
-            if (activeTab) {
-                activeTab.classList.remove('active');
-            }
-            newTab.classList.add('active');
+            // 清空输入框
+            document.getElementById('user-input').value = '';
             
             // 保存到本地存储
             saveChatToLocal();
@@ -3448,54 +3704,84 @@
         }
 
         // 修改删除聊天的函数
-        function deleteChat(element) {
-            const tab = element.closest('.chat-tab');
-            if (!tab) return;
-            
+        function deleteChat(deleteBtn) {
+            // 获取所有聊天标签（不包括新建按钮）
             const allTabs = document.querySelectorAll('.chat-tab:not(.new-chat-tab)');
-            if (allTabs.length <= 1) return;
-
-            const isActive = tab.classList.contains('active');
             
-            if (isActive) {
-                // 如果删除的是当前活动标签，切换到其他标签
-                const nextTab = tab.nextElementSibling;
-                const prevTab = tab.previousElementSibling;
+            // 如果只有一个标签，不允许删除
+            if (allTabs.length <= 1) {
+                return;
+            }
+
+            // 获取要删除的标签
+            const tabToDelete = deleteBtn.closest('.chat-tab');
+            const isActiveTab = tabToDelete.classList.contains('active');
+            
+            // 如果要删除的是当前活动标签，需要激活另一个标签
+            if (isActiveTab) {
+                // 尝试激活下一个标签，如果没有则激活前一个
+                const nextTab = tabToDelete.nextElementSibling;
+                const prevTab = tabToDelete.previousElementSibling;
                 
                 if (nextTab && !nextTab.classList.contains('new-chat-tab')) {
-                    switchToTab(nextTab);
+                    // 激活下一个标签
+                    nextTab.classList.add('active');
+                    // 清空消息区域并显示欢迎消息
+                    document.getElementById('chat-messages').innerHTML = `
+                        <div class="message ai">
+                            <div class="message-avatar">
+                                <span class="material-icons">smart_toy</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <strong>ETHAN AI</strong>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                <div class="message-text">Hello! I'm ETHAN AI, your personal assistant powered by ETHAN WONG LTD. How can I help you today?</div>
+                            </div>
+                        </div>
+                    `;
                 } else if (prevTab) {
-                    switchToTab(prevTab);
+                    // 激活前一个标签
+                    prevTab.classList.add('active');
+                    // 清空消息区域并显示欢迎消息
+                    document.getElementById('chat-messages').innerHTML = `
+                        <div class="message ai">
+                            <div class="message-avatar">
+                                <span class="material-icons">smart_toy</span>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <strong>ETHAN AI</strong>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                <div class="message-text">Hello! I'm ETHAN AI, your personal assistant powered by ETHAN WONG LTD. How can I help you today?</div>
+                            </div>
+                        </div>
+                    `;
                 }
             }
             
             // 删除标签
-            tab.remove();
+            tabToDelete.remove();
             
-            // 更新删除按钮显示状态
-            updateDeleteButtons();
+            // 更新删除按钮的显示状态
+            const remainingTabs = document.querySelectorAll('.chat-tab:not(.new-chat-tab)');
+            remainingTabs.forEach(tab => {
+                const deleteBtn = tab.querySelector('.delete-btn');
+                if (deleteBtn) {
+                    deleteBtn.style.display = remainingTabs.length > 1 ? 'inline-block' : 'none';
+                }
+            });
         }
 
-        // 添加切换标签的函数
+        // 修改切换标签的函数
         function switchToTab(tab) {
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             
-            // 清空当前消息
-            document.getElementById('chat-messages').innerHTML = `
-                <div class="message ai">
-                    <div class="message-avatar">
-                        <span class="material-icons">smart_toy</span>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <strong>ETHAN AI</strong>
-                            <span class="message-time">Just now</span>
-                        </div>
-                        <div class="message-text">Hello! I'm ETHAN AI, your personal assistant powered by ETHAN WONG LTD. How can I help you today?</div>
-                    </div>
-                </div>
-            `;
+            // 不再清空消息，而是保持当前消息
+            // document.getElementById('chat-messages').innerHTML = `...`;  // 删除这段代码
         }
 
         // 更新删除按钮显示状态
@@ -3511,7 +3797,7 @@
 
         // 修改激活标签的函数
         function activateTab(tab) {
-            // 移除所有标签的活动状态
+            // 移��所有标签的活动状态
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             
             // 激活选中的标签
@@ -3527,7 +3813,7 @@
             saveChatToLocal();
         }
 
-        // 在页面加载时初始化删除按钮状态
+        // 在��面加载时初始化删除按钮状态
         document.addEventListener('DOMContentLoaded', function() {
             updateDeleteButtons();
         });
@@ -3747,7 +4033,7 @@
                 const chats = JSON.parse(savedChats);
                 const chatTabs = document.querySelector('.chat-tabs');
                 
-                // 清除现有的标签（除了新建按钮）
+                // 清除现有的标��（除了新建按钮）
                 document.querySelectorAll('.chat-tab:not(.new-chat-tab)').forEach(tab => tab.remove());
                 
                 // 重建聊天标签
