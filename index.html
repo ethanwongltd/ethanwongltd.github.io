@@ -454,7 +454,7 @@
             font-size: 2.5rem;
             margin-bottom: 2rem; /* 减少标题下方间距 */
             text-align: center;
-            margin-top: -5vh; /* 整体向上偏移 */
+            margin-top: -5vh; /* ��体向上偏移 */
         }
 
         .contact-info {
@@ -667,7 +667,7 @@
             .contact-info {
                 width: 95%;
                 padding: 0 1rem;
-                gap: 1rem; /* 移动端稍微减小间距 */
+                gap: 1rem; /* 移动端稍微减小间�� */
             }
 
             .contact-item {
@@ -937,7 +937,7 @@
             overflow: hidden;
         }
 
-        /* 未登录状态的式（圆形） */
+        /* 未登录���态的式（圆形） */
         .login-button:not(.logged-in) {
             width: 44px;
             min-width: 44px;
@@ -2649,7 +2649,7 @@
             /* 调整第三屏联系信息卡片样式 */
             .contact-item {
                 padding: 1.5rem;
-                padding-right: 4.5rem; /* 为复制按钮留出更多空间 */
+                padding-right: 4.5rem; /* 为复制按钮留出��多空间 */
                 min-height: 60px; /* 确保最小高度 */
             }
 
@@ -2807,7 +2807,7 @@
             }
 
             .brand-intro {
-                font-size: 1rem !important; /* 减小正文字体 */
+                font-size: 1rem !important; /* 减小正���字体 */
                 line-height: 1.5;
                 max-width: 90%;
             }
@@ -3416,24 +3416,43 @@
         // 修改聊天处理函数
         async function handleChat() {
             const input = document.getElementById('user-input');
+            const sendButton = document.querySelector('.chat-input button');
             const message = input.value.trim();
             
             if (!message) return;
             
-            // 禁用输入和发送按钮
-            input.disabled = true;
-            const sendButton = document.getElementById('send-button');
-            sendButton.disabled = true;
-            
             try {
-                // 添加用户消息
-                addMessage(message, true);
-                input.value = '';
+                // 禁用发送按钮但保持输入框可用
+                sendButton.disabled = true;
                 
-                // 添加 AI 正在输入的提示
-                const typingIndicator = document.createElement('div');
-                typingIndicator.className = 'message ai';
-                typingIndicator.innerHTML = `
+                // 添加用户消息到聊天区域
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.insertAdjacentHTML('beforeend', `
+                    <div class="message user">
+                        <div class="message-avatar">
+                            <span class="material-icons">person</span>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>You</strong>
+                                <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div class="message-text">${message}</div>
+                        </div>
+                    </div>
+                `);
+                
+                // 清空输入框并保持焦点
+                input.value = '';
+                input.focus();
+                
+                // 滚动到最新消息
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // 显示加载动画
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message ai loading-message';
+                loadingDiv.innerHTML = `
                     <div class="message-avatar">
                         <span class="material-icons">smart_toy</span>
                     </div>
@@ -3451,26 +3470,119 @@
                         </div>
                     </div>
                 `;
-                document.getElementById('chat-messages').appendChild(typingIndicator);
-                typingIndicator.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                chatMessages.appendChild(loadingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
                 
-                // 发送消息到 Moonshot API
+                // 发送消息到服务器
                 const response = await sendToMoonshot(message);
-                typingIndicator.remove();
-                addMessage(response, false);
+                
+                // 移除加载动画
+                loadingDiv.remove();
+                
+                // 添加AI响应
+                chatMessages.insertAdjacentHTML('beforeend', `
+                    <div class="message ai">
+                        <div class="message-avatar">
+                            <span class="material-icons">smart_toy</span>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>ETHAN AI</strong>
+                                <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div class="message-text">${response}</div>
+                        </div>
+                    </div>
+                `);
+                
+                // 滚动到最新消息
+                chatMessages.scrollTop = chatMessages.scrollHeight;
                 
             } catch (error) {
-                console.error('Chat Error:', error);
-                const errorMessage = 'Sorry, I encountered an error. Please try again later.';
-                if (typingIndicator) typingIndicator.remove();
-                addMessage(errorMessage, false);
+                console.error('Error:', error);
+                const loadingMessage = document.querySelector('.loading-message');
+                if (loadingMessage) {
+                    loadingMessage.remove();
+                }
+                
+                // 显示错误消息
+                chatMessages.insertAdjacentHTML('beforeend', `
+                    <div class="message ai">
+                        <div class="message-avatar">
+                            <span class="material-icons">smart_toy</span>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>ETHAN AI</strong>
+                                <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div class="message-text">Sorry, there was an error processing your request.</div>
+                        </div>
+                    </div>
+                `);
+                
             } finally {
-                // 重新启用输入和发送按钮
-                input.disabled = false;
+                // 重新启用发送按钮
                 sendButton.disabled = false;
+                
+                // 确保输入框可用并保持焦点
+                input.disabled = false;
                 input.focus();
+                
+                // 保存聊天记录
+                saveChatToLocal();
             }
         }
+
+        // 添加移动端检测函数
+        function isMobile() {
+            return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        }
+
+        // 修改输入框的事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('user-input');
+            const chatContainer = document.querySelector('.chat-container');
+            
+            // 输入框获得焦点时的处理
+            input.addEventListener('focus', function() {
+                if (isMobile()) {
+                    // 在移动端，滚动到底部确保输入框可见
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            });
+            
+            // 点击聊天区域外的处理
+            document.addEventListener('click', function(e) {
+                const isClickInChat = chatContainer.contains(e.target);
+                const isClickInput = input === e.target;
+                
+                if (!isClickInChat && !isClickInput) {
+                    // 点击聊天区域外时失去焦点
+                    input.blur();
+                } else if (isClickInput) {
+                    // 点击输入框时获得焦点
+                    input.focus();
+                }
+            });
+            
+            // 发送按钮点击事件
+            document.querySelector('.chat-input button').addEventListener('click', function() {
+                handleChat();
+                if (isMobile()) {
+                    // 保持输入框焦点
+                    input.focus();
+                }
+            });
+            
+            // 回车发送
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleChat();
+                }
+            });
+        });
 
         // Add new chat functionality
         let currentChatId = 1;
@@ -3818,7 +3930,7 @@
 
         // 修改激活标签的函数
         function activateTab(tab) {
-            // 移��所有标签的活动状态
+            // 移所有标签的活动状态
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             
             // 激活选中的标签
@@ -3834,7 +3946,7 @@
             saveChatToLocal();
         }
 
-        // 在��面加载时初始化删除按钮状态
+        // 在面加载时初始化删除按钮状态
         document.addEventListener('DOMContentLoaded', function() {
             updateDeleteButtons();
         });
@@ -4054,7 +4166,7 @@
                 const chats = JSON.parse(savedChats);
                 const chatTabs = document.querySelector('.chat-tabs');
                 
-                // 清除现有的标��（除了新建按钮）
+                // 清除现有的标（除了新建按钮）
                 document.querySelectorAll('.chat-tab:not(.new-chat-tab)').forEach(tab => tab.remove());
                 
                 // 重建聊天标签
@@ -4083,6 +4195,40 @@
                         deleteBtn.style.display = allTabs.length > 1 ? 'inline-block' : 'none';
                     }
                 });
+            }
+        }
+
+        // 修改加载动画函数
+        function showLoading() {
+            const chatMessages = document.getElementById('chat-messages');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai loading-message';
+            loadingDiv.innerHTML = `
+                <div class="message-avatar">
+                    <span class="material-icons">smart_toy</span>
+                </div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <strong>ETHAN AI</strong>
+                        <span class="message-time">Typing...</span>
+                    </div>
+                    <div class="message-text">
+                        <div class="loading">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(loadingDiv);
+            loadingDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+
+        function hideLoading() {
+            const loadingMessage = document.querySelector('.loading-message');
+            if (loadingMessage) {
+                loadingMessage.remove();
             }
         }
     </script>
