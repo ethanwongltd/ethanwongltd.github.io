@@ -2898,7 +2898,7 @@
             }
 
             .chat-container {
-                height: 80vh; /* 在小屏幕上进一步增加����度 */
+                height: 80vh; /* 在小屏幕上进一步增��������度 */
             }
 
             /* 调整联系信息卡片在小屏幕上的样式 */
@@ -3308,6 +3308,45 @@
         #chat-messages .message .message-text {
             font-family: "Jersey", url('/fonts/Jersey25-Regular.ttf') !important;
         }
+
+        /* 移除页签相关样式 */
+        .chat-tabs,
+        .chat-tab,
+        .new-chat-tab {
+            display: none !important;
+        }
+
+        /* 调整聊天容器样式 */
+        .chat-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            height: 70vh;
+            box-sizing: border-box;
+        }
+
+        /* 调整消息容器样式 */
+        #chat-messages {
+            flex: 1;
+            width: 100%;
+            overflow-y: auto;
+            padding: 1rem;
+            padding-bottom: 80px;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+        /* 移除放大按钮 */
+        .expand-button {
+            display: none !important;
+        }
     </style>
     <!-- 添加 Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -3627,7 +3666,7 @@
             // 检查事件源是否在聊天区域内
             const isInChatArea = event.target.closest('.chat-container') !== null;
 
-            // 如果在聊天区域内，允许正常滚动，不触发翻页
+            // 如果在聊天区域内，允��正常滚动，不触发翻页
             if (isInChatArea) {
                 event.stopPropagation();
                 return;
@@ -4048,103 +4087,52 @@
 
         // 修改创建新标签的函数
         function createNewChat() {
-            currentChatId++;
-            const chatTabs = document.querySelector('.chat-tabs');
-            const newTab = document.createElement('div');
-            newTab.className = 'chat-tab';
-            newTab.dataset.id = currentChatId;
-            
-            newTab.innerHTML = `
-                <span class="tab-name">Chat ${currentChatId}</span>
-            `;
-            
-            // 添加点击事件监听器
-            newTab.addEventListener('click', function() {
-                // 移除其他标签的活动状态
-                document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
-                // 设置当前标签为活动状态
-                this.classList.add('active');
-                // 保存聊天记录
-                saveChatToLocal();
-            });
-            
-            chatTabs.insertBefore(newTab, document.querySelector('.new-chat-tab'));
-            
-            // 移除其他标签的活动状态
-            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
-            newTab.classList.add('active');
-            
-            // 清空聊天记录
-            document.getElementById('chat-messages').innerHTML = `
-                <div class="message ai">
-                    <div class="message-avatar">
-                        <span class="material-icons">smart_toy</span>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <strong>ETHAN AI</strong>
-                            <span class="message-time">Just now</span>
-                        </div>
-                        <div class="message-text">Hello! I'm ETHAN AI, your personal assistant powered by ETHAN WONG LTD. How can I help you today?</div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('user-input').value = '';
-            
-            saveChatToLocal();
+            // 移除此函数
         }
 
-        // 添加页签切换事件监听器
+        function deleteChat() {
+            // 移除此函数
+        }
+
+        function updateDeleteButtons() {
+            // 移除此函数
+        }
+
+        function saveChatToLocal() {
+            // 移除此函数或简化为只保存当前聊天记录
+            const chatMessages = document.getElementById('chat-messages').innerHTML;
+            localStorage.setItem('ethan_ai_chat', chatMessages);
+        }
+
+        function loadChatFromLocal() {
+            // 移除此函数或简化为只加载当前聊天记录
+            const savedChat = localStorage.getItem('ethan_ai_chat');
+            if (savedChat) {
+                document.getElementById('chat-messages').innerHTML = savedChat;
+            }
+        }
+
+        // 移除页签相关的事件监听器
         document.addEventListener('DOMContentLoaded', function() {
-            // 为现有的页签添加点击事件
-            document.querySelectorAll('.chat-tab').forEach(tab => {
-                if (!tab.classList.contains('new-chat-tab')) {
-                    tab.addEventListener('click', function() {
-                        // 移除其他标签的活动状态
-                        document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
-                        // 设置当前标签为活动状态
-                        this.classList.add('active');
-                        // 加载对应的聊天记录
-                        loadChatFromLocal(this.dataset.id);
-                    });
-                }
-            });
+            // 只保留必要的初始化代码
+            const savedChat = localStorage.getItem('ethan_ai_chat');
+            if (!savedChat) {
+                document.getElementById('chat-messages').innerHTML = `
+                    <div class="message ai">
+                        <div class="message-avatar">
+                            <span class="material-icons">smart_toy</span>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <strong>ETHAN AI</strong>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="message-text">Hello! I'm ETHAN AI, your personal assistant powered by ETHAN WONG LTD. How can I help you today?</div>
+                        </div>
+                    </div>
+                `;
+            }
         });
-
-        function saveChatHistory() {
-            if (userEmail) {
-                // 获取当前标签的所有信息
-                const currentChat = {
-                    messages: document.getElementById('chat-messages').innerHTML,
-                    title: document.querySelector('.chat-tab.active .tab-name').textContent
-                };
-                
-                // 保存到 chatHistory 对
-                chatHistory[currentChatId] = currentChat;
-                
-                // 保存到 localStorage
-                localStorage.setItem(`chat_${userEmail}`, JSON.stringify(chatHistory));
-            }
-        }
-
-        function loadChatHistory() {
-            if (userEmail) {
-                const saved = localStorage.getItem(`chat_${userEmail}`);
-                if (saved) {
-                    chatHistory = JSON.parse(saved);
-                    // 加载当前标签页的聊天记录
-                    const currentChat = chatHistory[currentChatId];
-                    if (currentChat) {
-                        document.getElementById('chat-messages').innerHTML = currentChat.messages;
-                        const currentTab = document.querySelector(`.chat-tab[data-id="${currentChatId}"]`);
-                        if (currentTab) {
-                            currentTab.querySelector('.tab-name').textContent = currentChat.title;
-                        }
-                    }
-                }
-            }
-        }
 
         function handleLogin() {
             const email = document.getElementById('userEmail').value;
@@ -4412,7 +4400,7 @@
             // 移所有标签的活动状态
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             
-            // 激活选中的标签
+            // 激��选中��标签
             tab.classList.add('active');
             
             // 更新当前聊天ID
