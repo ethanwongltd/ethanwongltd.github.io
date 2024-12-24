@@ -520,7 +520,7 @@
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0.5rem; /* 减少内边距 */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -529,19 +529,17 @@
             border-radius: 20px;
             height: 70vh;
             box-sizing: border-box;
-            overflow: hidden; /* 防止内容溢出 */
         }
 
-        /* 修改消息容器样式 */
+        /* 调整消息容器样式 */
         #chat-messages {
             flex: 1;
             width: 100%;
-            overflow-y: auto; /* 允许垂直滚动 */
-            padding: 1rem;
-            padding-bottom: 80px; /* 为输入框留出空间 */
+            overflow-y: auto;
+            padding: 0.5rem; /* 减少内边距 */
+            padding-bottom: 80px;
             margin-bottom: 0;
             position: relative;
-            height: calc(100% - 120px); /* 减去标签栏和输入框的高度 */
         }
 
         #chat-messages::-webkit-scrollbar {
@@ -676,7 +674,7 @@
 
         /* Contact Section */
         .contact-section {
-            padding-top: 0 !important; /* 移除顶部��边距 */
+            padding-top: 0 !important; /* 移除顶部边距 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -706,7 +704,7 @@
             display: flex;
             align-items: center;
             padding: 1.5rem;
-            padding-right: 4rem;
+            padding-right: 3rem; /* 减少右侧内边距，让文字更靠近按钮 */
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
             border-radius: 12px;
@@ -726,7 +724,7 @@
             align-items: center;
             justify-content: center;
             width: 20px; /* 固定宽度 */
-            height: 20px; /* 固定高度 */
+            height: 20px; /* ��定高度 */
         }
 
         .contact-item:hover {
@@ -745,7 +743,7 @@
 
         .contact-item span:not(.material-icons) {
             flex: 1;
-            margin-right: 12px;
+            margin-right: 6px; /* 从原来的 12px 减半为 6px */
         }
 
         .copyright {
@@ -1064,7 +1062,7 @@
         }
 
         .chat-tabs::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 194, 255, 0.5);  /* 仅改变透���度 */
+            background-color: rgba(0, 194, 255, 0.5);  /* 仅改变透度 */
         }
 
         /* 确保滚动条不会影响布局 */
@@ -1110,7 +1108,7 @@
             color: var(--accent-color);
         }
 
-        /* 除���有���命名相关的样式和行为 */
+        /* 除有命名相关的样式和行为 */
         .chat-tab .tab-name:hover,
         .chat-tab.active .tab-name:hover,
         .chat-tab .tab-name:focus,
@@ -2898,7 +2896,7 @@
             }
 
             .chat-container {
-                height: 80vh; /* 在小屏幕上进一步增��������度 */
+                height: 80vh; /* 在小屏幕上进一步增度 */
             }
 
             /* 调整联系信息卡片在小屏幕上的样式 */
@@ -3321,7 +3319,7 @@
             width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0.5rem; /* 减少内边距 */
             display: flex;
             flex-direction: column;
             position: relative;
@@ -3337,7 +3335,7 @@
             flex: 1;
             width: 100%;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 0.5rem; /* 减少内边距 */
             padding-bottom: 80px;
             margin-bottom: 0;
             position: relative;
@@ -3666,7 +3664,7 @@
             // 检查事件源是否在聊天区域内
             const isInChatArea = event.target.closest('.chat-container') !== null;
 
-            // 如果在聊天区域内，允��正常滚动，不触发翻页
+            // 如果在聊天区域内，允许正常滚动，不触发翻页
             if (isInChatArea) {
                 event.stopPropagation();
                 return;
@@ -3938,11 +3936,11 @@
                     </div>
                 `);
                 
-                // 清空输入框并保持��点
+                // 清空输入框并保持焦点
                 input.value = '';
                 input.focus();
                 
-                // 滚动到最新消息
+                // 滚��到最新消息
                 chatMessages.scrollTop = chatMessages.scrollHeight;
                 
                 // 显示加载动画
@@ -4062,7 +4060,7 @@
                 }
             });
             
-            // 发送按钮点击��件
+            // 发送按钮点击事件
             document.querySelector('.chat-input button').addEventListener('click', function() {
                 handleChat();
                 if (isMobile()) {
@@ -4397,10 +4395,10 @@
 
         // 修改激活标签的函数
         function activateTab(tab) {
-            // 移所有标签的活动状态
+            // 移���有标签的活动状态
             document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
             
-            // 激��选中��标签
+            // 激选中标签
             tab.classList.add('active');
             
             // 更新当前聊天ID
@@ -4483,7 +4481,7 @@
             }
         }
 
-        // 在 DOM 加载完成后��始化星空背景
+        // 在 DOM 加载完成后初始化星空背景
         document.addEventListener('DOMContentLoaded', function() {
             createStarryBackground();
             // ... 其他现有的初始化代码 ...
